@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - Portofolio Saya</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+        }
+
+        .dark-theme {
+            --primary-color: #0d6efd;
+            --secondary-color: #adb5bd;
+            --background-color: #212529;
+            --text-color: #f8f9fa;
+            --card-bg: #343a40;
+            --border-color: #495057;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+        }
+
+        .btn-theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .skill-bar {
+        background: #ddd;
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+    }
+    .skill-progress {
+        height: 100%;
+        background: var(--primary-color);
+        border-radius: 4px;
+    }
+
+        .project-img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+            /* Styling dasar navbar */
+    .navbar {
+        padding: 15px;
+        transition: background-color 0.3s ease-in-out, padding 0.3s ease-in-out;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        color: #ffffff;
+        transition: color 0.3s;
+    }
+
+    .nav-link {
+        font-size: 1rem;
+        color: #ffffff;
+        transition: color 0.3s;
+        margin: 0 10px;
+    }
+
+    .nav-link:hover {
+        color: #f8b400;
+    }
+
+    /* Saat di atas (navbar memiliki warna) */
+    .navbar.top {
+        background-color: rgba(0, 0, 0, 0.85);
+        padding: 10px;
+    }
+
+    /* Saat di-scroll (navbar transparan) */
+    .navbar.scrolled {
+        background-color: rgba(0, 0, 0, 0);
+        padding: 5px;
+    }
+
+    /* Masonry Grid Layout */
+    .gallery-grid {
+        column-count: 5;
+        column-gap: 15px;
+    }
+
+    .gallery-item {
+        width: 100%;
+        margin-bottom: 15px;
+        display: block;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        cursor: zoom-in;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Lightbox Styling */
+    .lightbox {
+        display: flex;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    /* Lightbox image */
+    .lightbox-content {
+        max-width: 80%;
+        max-height: 80%;
+        border-radius: 10px;
+        transform: scale(0.8);
+        transition: transform 0.4s ease;
+    }
+
+    /* Lightbox Active State */
+    .lightbox.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .lightbox.active .lightbox-content {
+        transform: scale(1);
+    }
+
+    /* Close Button */
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
+        color: white;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .close:hover {
+        color: #f8b400;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 1024px) {
+        .gallery-grid {
+            column-count: 3;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .gallery-grid {
+            column-count: 2;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .gallery-grid {
+            column-count: 1;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">My Portfolio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Tentang Saya</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">Keahlian</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Proyek</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Kontak</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="d-flex align-items-center justify-content-center text-center" 
+    style="height: 100vh; background: url('Assets/2454678.jpg') no-repeat center center/cover;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold text-white">Selamat Datang di Portofolio Saya</h1>
+                <p class="lead text-white">Saya adalah seorang pengembang mobile yang berfokus pada pembuatan pengalaman digital yang menarik dan fungsional.</p>
+                <a href="#contact" class="btn btn-primary mt-3">Hubungi Saya</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="about-skills" class="py-5" style="background-color: var(--card-bg)">
+    <div class="container">
+        <div class="text-center mb-4">
+            <img src="Assets/foto_edit_saya_2.png" alt="Profile Picture" class="img-fluid rounded-circle shadow" 
+                 style="width: 200px; height: 200px; object-fit: cover;">
+        </div>
+        <div class="row align-items-center">
+            <!-- About Me (70%) -->
+            <div class="col-lg-9">
+                <h2 class="mb-4" style="color: var(--primary-color)">Tentang Saya</h2>
+                <p class="lead">Halo, nama saya Wildan Tisna Surya Nugraha. Saya seorang pelajar yang memiliki minat pada pengembangan IOT dan mobile dengan pengalaman dalam flutter, laravel dan berbagai framework modern.</p>
+                <p>Saya memiliki minat pada menciptakan solusi digital yang tidak hanya terlihat bagus, tetapi juga memberikan pengalaman pengguna yang luar biasa. Dengan latar belakang di bidang tenik, saya memadukan kreativitas dengan keterampilan teknis untuk menghasilkan produk yang berkualitas.</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p><i class="bi bi-envelope-fill me-2" style="color: var(--primary-color)"></i> wildan27370@gmail.com</p>
+                        <p><i class="bi bi-geo-alt-fill me-2" style="color: var(--primary-color)"></i> Garut, Jawa barat, Indonesia</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="bi bi-linkedin me-2" style="color: var(--primary-color)"></i> linkedin.com/in/wildan-tisna-surya-nugraha</p>
+                        <p><i class="bi bi-github me-2" style="color: var(--primary-color)"></i> github.com/Wilimaxs</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skills Bar (30%) -->
+            <div class="col-lg-3 d-flex flex-column align-items-center justify-content-center">
+                <div class="skill-item d-flex align-items-center mb-3 w-100">
+                    <img src="Assets/icon_flutter.png" alt="Flutter" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <div class="skill-bar w-100">
+                        <div class="skill-progress" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-item d-flex align-items-center mb-3 w-100">
+                    <img src="Assets/laravel_icon.png" alt="Laravel" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <div class="skill-bar w-100">
+                        <div class="skill-progress" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="skill-item d-flex align-items-center mb-3 w-100">
+                    <img src="Assets/mysql_logo.png" alt="React" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <div class="skill-bar w-100">
+                        <div class="skill-progress" style="width: 80%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-5" style="background-color: var(--card-bg)">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: var(--primary-color)">Proyek Terbaru</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <!-- Project 1 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/pendeteksi_sinyal1.png" class="card-img-top project-img" alt="Project 1">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Pendeteksi Sinyal Telepon</h5>
+                            <p class="card-text text-white">Proyek pertama dalam pembuatan pendeteksi sinyal dimana terdapat antenna untuk mendeteksi ketika terdapat handphone yang aktif dan terhubung dengan internet dalam radius 5 meter</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">Embedded System</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://youtube.com/shorts/Gsx7wQ4mj90" class="btn btn-sm btn-outline-primary">Demo</a>
+                                <a href="https://github.com/Wilimaxs/Call_Phone-Detection" class="btn btn-sm btn-outline-secondary">GitHub</a>         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/smart_lock1.png" class="card-img-top project-img" alt="Project 2">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Smart lock</h5>
+                            <p class="card-text text-white">Proyek smart lock,
+                                memudahkan pengguna dalam membuka dan
+                                mengunci pintu dari mana saja dan kapan saja
+                                dengan menggunakan aplikasi yang dapat
+                                digunakan di smartphone, </p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">App Inventor</span>
+                                <span class="badge bg-secondary">Ardunino IDE</span>
+                                <span class="badge bg-success">PHP</span>
+                                <span class="badge bg-primary">ESP 8266</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://youtu.be/6cm6t6PlfaY" class="btn btn-sm btn-outline-primary">Demo</a>
+                                <a href="https://github.com/Wilimaxs/smart-lock" class="btn btn-sm btn-outline-secondary">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/smart_garden.png" class="card-img-top project-img" alt="Project 3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Smart garden</h5>
+                            <p class="card-text text-white">sistem
+                                pengatur kelembaban tanah . Dalam
+                                pengembangannya, 
+                                menggunakan termasuk ESP32, sensor
+                                kelembaban, dan pompa air. Dirancang untuk mengontrol laju aliran air
+                                dengan memanfaatkan konsep Blink lalu
+                                menggunakan android untuk mengontrol
+                                perubahannya. </p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">Platform Io</span>
+                                <span class="badge bg-secondary">PHP</span>
+                                <span class="badge bg-success">App Inventor</span>
+                                <span class="badge bg-primary">ESP 32</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Project 4 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/website_jadwal_piket.png" class="card-img-top project-img" alt="Project 3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Website Jadwal piket</h5>
+                            <p class="card-text text-white">Pembuatan website jadwal piket atas permintaan mitra sekolah swasta, dimana didalamanya dilengkapi dengan konsep gamifikasi untuk membuat siswa dapat bersemangat dalam membersihkan lingkungan aktivitas mereka disertai dengan pemberian poin dan hadiah.</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">HTML5</span>
+                                <span class="badge bg-secondary">Bootstrap</span>
+                                <span class="badge bg-success">JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://github.com/Wilimaxs/CleanClas" class="btn btn-sm btn-outline-secondary">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/media_belajar.png" class="card-img-top project-img" alt="Project 3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Media Pembelajaran dengan Game</h5>
+                            <p class="card-text text-white">Proyek pembuatan game ini ditunjukan untuk
+                                membantu dalam pembelajaran algoritma
+                                sorting dan queue, dengan menggunakan pixel
+                                game make mv, lalu menyusun storyboard dan
+                                alur kerjanya maka game ini dapat diselesaikan
+                                dengan baik.</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">Fixel Game Maker</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://ejurnal.teknokrat.ac.id/index.php/teknokompak/article/view/3888/1458" class="btn btn-sm btn-outline-primary">Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Project 6 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/kids_trackr.png" class="card-img-top project-img" alt="Project 3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Aplikasi Monitoring Siswa</h5>
+                            <p class="card-text text-white">Aplikasi monitoring siswa di lingkungan sekolah dilengkapi dengan monitoring absen, nilai sekolah, pesan kepada guru, kegiatan sekolah, dll. terdapat machine learning dan chatbot didalamnya</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">HTML5</span>
+                                <span class="badge bg-secondary">Bootstrap</span>
+                                <span class="badge bg-success">JavaScript</span>
+                                <span class="badge bg-success">Laravel</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://youtu.be/tOJjFUMMYH8" class="btn btn-sm btn-outline-primary">Demo</a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Project 7 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/ppob.jpg" class="card-img-top project-img" alt="Project 3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Aplikasi PPOB</h5>
+                            <p class="card-text text-white">aplikasi payment untuk pembelian
+                                pulsa, kuota, game, dll atau dapat disebut PPOB.
+                                dalam pembuatannya terdapat versi android dan
+                                website dimana keduanya saling berhubungan
+                                , menggunakan flutter
+                                untuk android, laravel untuk website dan restfull
+                                API, dan python untuk membuat logika diskon</p>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <span class="badge bg-primary">flutter</span>
+                                    <span class="badge bg-secondary">Bootstrap</span>
+                                    <span class="badge bg-success">Laravel</span>
+                                    <span class="badge bg-primary">Integrasi Tripay</span>
+                                    <span class="badge bg-secondary">Integrasi Midtrans</span>
+                                    <span class="badge bg-success">Python</span>
+                                </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://github.com/Wilimaxs/API_NEXURAPAY" class="btn btn-sm btn-outline-secondary">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 7 -->
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="Assets/mockup_dashboard.jpg" class="card-img-top project-img" alt="Project 3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: var(--primary-color)">Aplikasi Jadwal Ramadhan</h5>
+                            <p class="card-text text-white">Aplikasi yang dirancang khusus untuk menemani kamu selama bulan suci Ramadan. Dengan fitur alarm otomatis sesuai jadwal imsak dan berbuka puasa, kamu tidak akan lagi ketinggalan waktu penting dalam sehari. Selain itu, tersedia kalender kegiatan untuk mencatat dan merencanakan aktivitas ibadah harian seperti tadarus, sedekah, atau agenda buka bersama.</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <span class="badge bg-primary">Flutter</span>
+                                <span class="badge bg-secondary">Firebase</span>
+                                <span class="badge bg-success">Aladhan API</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="https://youtube.com/shorts/jGOwi-0z0so" class="btn btn-sm btn-outline-primary">Demo</a> 
+                                <a href="https://github.com/Wilimaxs/muslim_schedule" class="btn btn-sm btn-outline-secondary">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Sections -->
+    <section id="gallery" class="container py-5">
+        <h2 class="text-center mb-4">Galeri</h2>
+        <div class="gallery-grid">
+            <img src="Assets/pendeteksi_sinyal.png" alt="Image 1" class="gallery-item">
+            <img src="Assets/smart_lock2.png" alt="Image 2" class="gallery-item">
+            <img src="Assets/smart_lock3.png" alt="Image 3" class="gallery-item">
+            <img src="Assets/smart_garden2.png" alt="Image 4" class="gallery-item">
+            <img src="Assets/website_jadwal_piket2.png" alt="Image 5" class="gallery-item">
+            <img src="Assets/website_jadwal_piket3.png" alt="Image 6" class="gallery-item">
+            <img src="Assets/media_belajar2.png" alt="Image 7" class="gallery-item">
+            <img src="Assets/media_belajar3.png" alt="Image 8" class="gallery-item">
+            <img src="Assets/kids_trackr2.png" alt="Image 9" class="gallery-item">
+            <img src="Assets/kids_trackr3.png" alt="Image 10" class="gallery-item">
+            <img src="Assets/ppob.jpg" alt="Image 11" class="gallery-item">
+        </div>
+    </section>
+    
+    <!-- Lightbox (Popup Gambar) -->
+    <div id="lightbox" class="lightbox">
+        <span class="close">&times;</span>
+        <img id="lightbox-img" class="lightbox-content">
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: var(--primary-color)">Hubungi Saya</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">Nama</label>
+                                        <input type="text" class="form-control" id="name" required style="background-color: var(--background-color); color: var(--text-color);">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" required style="background-color: var(--background-color); color: var(--text-color);">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="subject" class="form-label">Subjek</label>
+                                        <input type="text" class="form-control" id="subject" required style="background-color: var(--background-color); color: var(--text-color);">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="message" class="form-label">Pesan</label>
+                                        <textarea class="form-control" id="message" rows="5" required style="background-color: var(--background-color); color: var(--text-color);"></textarea>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button type="submit" class="btn btn-primary px-4 py-2">Kirim Pesan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center" style="background-color: var(--card-bg)">
+        <div class="container">
+            <div class="social-icons mb-4">
+                <a href="#" class="mx-2" style="color: var(--primary-color)"><i class="bi bi-facebook fs-4"></i></a>
+                <a href="#" class="mx-2" style="color: var(--primary-color)"><i class="bi bi-twitter fs-4"></i></a>
+                <a href="#" class="mx-2" style="color: var(--primary-color)"><i class="bi bi-instagram fs-4"></i></a>
+                <a href="#" class="mx-2" style="color: var(--primary-color)"><i class="bi bi-linkedin fs-4"></i></a>
+                <a href="#" class="mx-2" style="color: var(--primary-color)"><i class="bi bi-github fs-4"></i></a>
+            </div>
+            <p class="mb-0">&copy; 2025 My Portfolio. All rights reserved.</p>
+            <p class="text-muted small">Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> dan Bootstrap</p>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Button -->
+    <button class="btn btn-theme-toggle shadow" onclick="toggleTheme()">
+        <i class="bi bi-sun-fill fs-4" id="theme-icon"></i>
+    </button>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme Toggling Function
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                icon.classList.remove('bi-moon-fill');
+                icon.classList.add('bi-sun-fill');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark-theme');
+                icon.classList.remove('bi-sun-fill');
+                icon.classList.add('bi-moon-fill');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // Check for saved theme preference
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                icon.classList.remove('bi-sun-fill');
+                icon.classList.add('bi-moon-fill');
+            }
+            
+            // Smooth scrolling for navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 70,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        window.addEventListener("scroll", function () {
+        var navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+            navbar.classList.remove("top");
+        } else {
+            navbar.classList.add("top");
+            navbar.classList.remove("scrolled");
+        }
+    });
+
+
+    // Lightbox functionality
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const images = document.querySelectorAll(".gallery-item");
+
+    images.forEach(img => {
+        img.addEventListener("click", function() {
+            lightboxImg.src = this.src;
+            lightbox.classList.add("active"); // Tambahkan class untuk animasi
+        });
+    });
+
+    document.querySelector(".close").addEventListener("click", function() {
+        lightbox.classList.remove("active"); // Hapus class agar animasi keluar
+    });
+
+    lightbox.addEventListener("click", function(event) {
+        if (event.target === lightbox) {
+            lightbox.classList.remove("active");
+        }
+    });
+    </script>
+</body>
+</html>
